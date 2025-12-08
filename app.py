@@ -4,7 +4,6 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.status import HTTP_403_FORBIDDEN
-import json
 import sqlmodel
 
 class Input(BaseModel):
