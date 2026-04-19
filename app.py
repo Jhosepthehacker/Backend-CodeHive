@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.status import HTTP_403_FORBIDDEN
 import sqlmodel
-import sqlite3 as sql
+import py-sqlite3 as sql
 
 class DataBase:
     def __init__(self, conn):
