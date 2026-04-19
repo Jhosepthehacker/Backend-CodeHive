@@ -5,6 +5,30 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.status import HTTP_403_FORBIDDEN
 import sqlmodel
+import sqlite3 as sql
+
+class DataBase:
+    def __init__(self, conn):
+        self.conn = conn
+        self.conn.commit()
+        self.conn.close()
+
+        self.create_table()
+
+    def create_table(self):
+        try:
+            self.conn = sql.connect("data_server.db")
+            self.cursor = self.conn.cursor()
+            self.cursor.execute(
+                """CREATE TABLE IF NOT EXISTS users(
+                     name TEXT,
+                     last_name TEXT,
+                     is_google TEXT
+                )"""
+            )
+        finally:
+            self.conn.commit()
+            self.conn.close()
 
 class Input(BaseModel):
     user_name: str
@@ -37,3 +61,7 @@ def name():
 @app.post('/accounts', tags=["Accounts"])
 def login():
     return {}
+
+if __name__ == '__main__':
+    conn = sql.connect("data_server.db")
+    db = DataBase(conn)
