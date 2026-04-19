@@ -28,9 +28,12 @@ def message_of_welcome():
         "message": "Bienvenido(a) a mi app full-stack"
         }
 
+@app.post('/user_names', tags=["User Names"])
+def name():
+    return {
+        "status": 201
+    }
+
 @app.post('/accounts', tags=["Accounts"])
 def login():
-    return {
-        "status": 201,
-        "detail": "Created"
-    }
+    return {}
