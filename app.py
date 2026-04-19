@@ -18,7 +18,7 @@ class DataBase:
 
         self.create_table()
 
-    def create_table(self, user_name):
+    def create_table(self):
         try:
             self.conn = sql.connect("data_server.db")
             self.cursor = self.conn.cursor()
@@ -33,9 +33,11 @@ class DataBase:
             self.conn.commit()
             self.conn.close()
 
-    def insert_data(self):
+    def insert_data(self, user_name):
         try:
-            self.conn = sql.connect("data_server")
+            self.conn = sql.connect("data_server.db")
+            self.cursor = self.conn.cursor()
+            self.cursor.execute("INSERT INTO users VALUES('{}');")
         finally:
             self.conn.commit()
             self.conn.close()
@@ -44,8 +46,8 @@ class Input(BaseModel):
     user_name: str
 
 app = FastAPI(
-    title="My App Full-Stack",
-    description="This is my app full-stack"
+    title="Backend CodeHive",
+    description="This is my app Backend CodeHive"
 )
 
 app.add_middleware(
