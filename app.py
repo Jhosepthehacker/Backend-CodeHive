@@ -13,7 +13,7 @@ class DataBase:
             self.conn = conn
             self.conn.commit()
             self.conn.close()
-        except AtributeError:
+        except AttributeError:
             pass
 
         self.create_table()
