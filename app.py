@@ -9,9 +9,12 @@ import sqlite3 as sql
 
 class DataBase:
     def __init__(self, conn):
-        self.conn = conn
-        self.conn.commit()
-        self.conn.close()
+        try:
+            self.conn = conn
+            self.conn.commit()
+            self.conn.close()
+        except AtributeError:
+            pass
 
         self.create_table()
 
@@ -54,13 +57,15 @@ def message_of_welcome():
 
 @app.post('/user_names', tags=["User Names"])
 def name():
+    
+    
     return {
         "status": 201
     }
 
-@app.post('/accounts', tags=["Accounts"])
-def login():
-    return {}
+# @app.post('/accounts', tags=["Accounts"])
+# def login():
+#     return {}
 
 if __name__ == '__main__':
     conn = sql.connect("data_server.db")
