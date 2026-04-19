@@ -14,11 +14,11 @@ class DataBase:
             self.conn.commit()
             self.conn.close()
         except AttributeError:
-            pass
+            return 1
 
         self.create_table()
 
-    def create_table(self):
+    def create_table(self, user_name):
         try:
             self.conn = sql.connect("data_server.db")
             self.cursor = self.conn.cursor()
@@ -29,6 +29,13 @@ class DataBase:
                      is_google TEXT
                 )"""
             )
+        finally:
+            self.conn.commit()
+            self.conn.close()
+
+    def insert_data(self):
+        try:
+            self.conn = sql.connect("data_server")
         finally:
             self.conn.commit()
             self.conn.close()
@@ -49,19 +56,37 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.get('/welcome', tags=["Welcome"])
-def message_of_welcome():
-    return {
-        "message": "Bienvenido(a) a mi app full-stack"
-        }
-
 @app.post('/user_names', tags=["User Names"])
-def name():
-    
-    
+def recolect_name(user_name: str):
+    conn = sql.connect("data_server.db")
+    db = DataBase(conn)
+
+    if db == 1:
+        print("Error in DB")
+        print("Code 1")
+    else:
+        try:
+            db.insert_data(user_name)
+        except NameError:
+            print("NameError: code 1")
+
     return {
         "status": 201
     }
+
+@app.post('/last_name_for_users', tags=["Last Name For Users"])
+def recolect_last_name():
+    return {
+        "status": 201
+    }
+
+# @app.post('/is_google', tags=["Protect Server"])
+# def is_google():
+#
+#
+#     return {
+#         "status": 403
+#     }
 
 # @app.post('/accounts', tags=["Accounts"])
 # def login():
@@ -69,4 +94,5 @@ def name():
 
 if __name__ == '__main__':
     conn = sql.connect("data_server.db")
+    
     db = DataBase(conn)
