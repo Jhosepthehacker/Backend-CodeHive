@@ -33,11 +33,11 @@ class DataBase:
             self.conn.commit()
             self.conn.close()
 
-    def insert_data(self, user_name):
+    def insert_data(self, user_name, last_name):
         try:
             self.conn = sql.connect("data_server.db")
             self.cursor = self.conn.cursor()
-            self.cursor.execute("INSERT INTO users VALUES('{}');") # Critical vulnerability: SQL Inyection
+            self.cursor.execute(f"INSERT INTO users VALUES('{user_name}', '{last_name}', '{is_google}');") # Critical vulnerability: SQL Inyection
         finally:
             self.conn.commit()
             self.conn.close()
@@ -66,15 +66,20 @@ def recolect_name(user_name: str):
     if db == 1:
         print("Error in DB")
         print("Code 1")
+
+        return {
+            "status": 500
+        }
+    
     else:
         try:
-            db.insert_data(user_name)
+            db.insert_data(user_name, None, None)
         except NameError:
             print("NameError: code 1")
 
-    return {
-        "status": 201
-    }
+        return {
+            "status": 201
+        }
 
 @app.post('/last_name_for_users', tags=["Last Name For Users"])
 def recolect_last_name():
