@@ -37,7 +37,7 @@ class DataBase:
         try:
             self.conn = sql.connect("data_server.db")
             self.cursor = self.conn.cursor()
-            self.cursor.execute("INSERT INTO users VALUES('{}');") # Critical vulnerabily: SQL Inyection
+            self.cursor.execute("INSERT INTO users VALUES('{}');") # Critical vulnerability: SQL Inyection
         finally:
             self.conn.commit()
             self.conn.close()
